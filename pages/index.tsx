@@ -51,7 +51,7 @@ export default function Home() {
       <main className="bg-gradient-to-br from-gray-900 to-slate-700 min-h-screen h-fit">
         <nav className=" bg-gradient-to-b from-gray-100 to-slate-300 relative shadow-lg">
           <h1
-            className="font-extrabold text-transparent text-7xl bg-clip-text 
+            className="font-extrabold text-transparent text-5xl bg-clip-text 
                       bg-gradient-to-br from-purple-500 to-sky-400 text-center
                       flex justify-center py-6"
           >
