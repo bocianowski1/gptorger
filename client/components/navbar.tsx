@@ -1,58 +1,54 @@
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
-import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
+import { FaAngleLeft, FaAngleRight, FaGithub } from "react-icons/fa";
+
+import logo from "../assets/openai.png";
 
 const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false);
   return (
-    <>
-      <nav className=" bg-gradient-to-b from-gray-100 to-slate-300 relative shadow-lg">
-        <Link href={"/"}>
-          <h1
-            className="font-extrabold text-transparent text-7xl bg-clip-text 
-                      bg-gradient-to-br from-purple-500 to-sky-400 text-center
-                      flex justify-center py-6"
-          >
-            GPTorger
-            {/* <p className=" animate-spin">🤣</p> */}
-          </h1>
-        </Link>
-        <div
-          onClick={() => setShowMenu(!showMenu)}
-          className="text-4xl flex justify-center items-center 
-                          absolute top-0 right-0 mr-8 mt-12 hover:cursor-pointer"
+    <nav
+      className=" backdrop-blur-lg py-4 fixed z-10 w-screen top-0 left-0 
+              flex items-center justify-between"
+    >
+      <button
+        className="h-8 px-4"
+        onClick={() => {
+          document.getElementById("index")?.scrollIntoView();
+        }}
+      >
+        <Image
+          className="h-full w-full object-cover"
+          src={logo}
+          alt={"logo"}
+          height={200}
+          width={200}
+        />
+      </button>
+      <div className="text-sm flex items-center px-6">
+        <button
+          className="px-4 transition-all ease-in-out duration-300 hover:font-bold"
+          onClick={() => {
+            document.getElementById("images")?.scrollIntoView();
+          }}
         >
-          {showMenu ? (
-            <button className="active:animate-turn">
-              <FaAngleRight />
-            </button>
-          ) : (
-            <button className="active:animate-turn">
-              <FaAngleLeft />
-            </button>
-          )}
-        </div>
-      </nav>
-      <div className="relative w-screen">
-        <div
-          className={`bg-slate-300 absolute right-0 w-1/5 
-                          flex justify-center py-2 translate-x-full
-                           ${
-                             showMenu ? "animate-slidein" : "animate-slideout"
-                           }`}
-        >
-          <ul>
-            <Link href={"image-generation"}>
-              <li>Image</li>
-            </Link>
+          IMAGES
+        </button>
 
-            <Link href={"/text-generation"}>
-              <li>Text</li>
-            </Link>
-          </ul>
-        </div>
+        <button
+          className="px-4 transition-all ease-in-out duration-300 hover:font-bold"
+          onClick={() => {
+            document.getElementById("text")?.scrollIntoView();
+          }}
+        >
+          TEXT
+        </button>
+        <Link className="pl-4" href={"https://github.com/bocianowski1"}>
+          <FaGithub />
+        </Link>
       </div>
-    </>
+    </nav>
   );
 };
 

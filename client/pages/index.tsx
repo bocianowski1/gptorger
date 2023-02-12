@@ -6,8 +6,13 @@ import { useEffect, useState, useRef } from "react";
 
 import TextGeneration from "./text-generation";
 import ImageGeneration from "./image-generation";
+import manPlanetImage from "../assets/colorsky.jpg";
+import Welcome from "./welcome";
 
 export default function Home() {
+  const sections = ["index", "images", "text"];
+  const [activeSection, setActiveSection] = useState("index");
+
   return (
     <>
       <Head>
@@ -16,8 +21,25 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="bg-gradient-to-br from-gray-900 to-slate-700 min-h-screen h-fit">
-        Welcome
+
+      <Navbar />
+      <main className="relative h-screen">
+        <Image
+          className="h-full w-full object-cover -z-20 fixed top-0"
+          src={manPlanetImage}
+          alt={"Man looking at a planet"}
+          height={400}
+          width={400}
+        />
+        <section id="index">
+          <Welcome />
+        </section>
+        <section id="images">
+          <ImageGeneration />
+        </section>
+        <section id="text">
+          <TextGeneration />
+        </section>
       </main>
     </>
   );
