@@ -12,29 +12,18 @@ module.exports = {
     extend: {
       keyframes: {
         fadein: {
-          "0%": { opacity: "0%", transform: "translateX(100%)" },
-          "50%": {
-            opacity: "75%%",
-            transform: "translate(-15%)",
-          },
-          "75%": {
-            opacity: "100%",
-            transform: "translate(10%)",
-            transform: "rotate(3deg)",
-          },
+          "0%": { opacity: "0%" },
+          "100%": { opacity: "100%" },
         },
-        slidein: {
-          "0%": { transform: "translateX(100%)" },
+        slideup: {
+          "0%": {
+            transform: "translateX(-100%)",
+          },
           "100%": { transform: "translateX(0%)" },
         },
-        slideout: {
-          "0%": { transform: "translateX(0%)" },
-          "100%": { transform: "translateX(100%)" },
-        },
-        turn: {
+        slowspin: {
           "0%": { transform: "rotate(0deg)" },
-          "50%": { transform: "rotate(90deg)" },
-          "100%": { transform: "rotate(180deg)" },
+          "100%": { transform: "rotate(-360deg)" },
         },
 
         wiggle: {
@@ -44,10 +33,10 @@ module.exports = {
         },
       },
       animation: {
-        fadein: "fadein .75s forwards",
-        slidein: "slidein .25s normal forwards",
-        slideout: "slideout .25s normal forwards",
-        turn: "turn .1s normal forwards",
+        fadein: "fadein .75s normal forwards",
+        slideup: "slideup .5s normal forwards",
+        slowspin: "slowspin 2s linear infinite",
+        superslowspin: "slowspin 10s linear infinite",
         wiggle: "wiggle .25s normal forwards",
       },
     },

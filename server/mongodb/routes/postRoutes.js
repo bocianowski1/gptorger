@@ -4,6 +4,47 @@ import { v2 as cloudinary } from "cloudinary";
 
 import PostSchema from "../models/post.js";
 
+dotenv.config();
+
 const router = express.Router();
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET,
+});
+
+router.route("/").get(async (req, res) => {
+  try {
+    const posts = await PostSchema.find({});
+    res.status(200).json({ success: true, data: posts });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error });
+  }
+});
+
+router.route("/").post(async (req, res) => {
+  try {
+    const { name, prompt, image } = req.body;
+    const url = cloudinary.uploader.upload(image);
+
+    const post = await PostSchema.create({
+      name,
+      prompt,
+      image: image,
+    });
+
+    // 201 = created
+    res.status(201).json({ success: true, data: post });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error });
+  }
+});
+
+router.route("/").delete(async (req, res) => {
+  try {
+  } catch (error) {}
+});
 
 export default router;

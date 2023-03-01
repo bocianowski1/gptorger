@@ -1,22 +1,23 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { FaAngleLeft, FaAngleRight, FaGithub } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
+import { BsPersonCircle } from "react-icons/bs";
 
 import logo from "../assets/openai.png";
+import { useStateContext } from "@/context/state-context";
 
 const Navbar = () => {
-  const [showMenu, setShowMenu] = useState(false);
+  const { activeSection, isSignedIn, setIsSignedIn } = useStateContext();
   return (
     <nav
       className=" backdrop-blur-lg py-4 fixed z-10 w-screen top-0 left-0 
               flex items-center justify-between"
     >
-      <button
-        className="h-8 px-4"
-        onClick={() => {
-          document.getElementById("index")?.scrollIntoView();
-        }}
+      <Link
+        id="text"
+        className="h-8 px-4 rounded-full animate-superslowspin hover:animate-slowspin "
+        href={"/"}
       >
         <Image
           className="h-full w-full object-cover"
@@ -25,27 +26,36 @@ const Navbar = () => {
           height={200}
           width={200}
         />
-      </button>
+      </Link>
       <div className="text-sm flex items-center px-6">
-        <button
-          className="px-4 transition-all ease-in-out duration-300 hover:font-bold"
-          onClick={() => {
-            document.getElementById("images")?.scrollIntoView();
-          }}
+        <Link
+          id="images"
+          className={`px-4 ${
+            activeSection === "images" &&
+            "font-extrabold transition-all duration-200 scale-105 underline"
+          }`}
+          href={"/ai/image-generation"}
         >
           IMAGES
-        </button>
-
-        <button
-          className="px-4 transition-all ease-in-out duration-300 hover:font-bold"
-          onClick={() => {
-            document.getElementById("text")?.scrollIntoView();
-          }}
+        </Link>
+        <Link
+          className={`px-4 ${
+            activeSection === "text" &&
+            "font-extrabold transition-all duration-200 scale-105 underline"
+          }`}
+          href={"/ai/text-generation"}
         >
           TEXT
-        </button>
-        <Link className="pl-4" href={"https://github.com/bocianowski1"}>
+        </Link>
+        {/* <Link
+          className="pl-2 text-lg"
+          href={"https://github.com/bocianowski1"}
+          target={"_blank"}
+        >
           <FaGithub />
+        </Link> */}
+        <Link className="pl-2 text-lg" href={"/user/profile"}>
+          <BsPersonCircle />
         </Link>
       </div>
     </nav>

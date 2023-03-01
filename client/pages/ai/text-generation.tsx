@@ -1,15 +1,24 @@
-import { useState, useRef } from "react";
+import Image from "next/image";
+import { useState, useEffect } from "react";
+import { motion as m } from "framer-motion";
+import { useStateContext } from "@/context/state-context";
+
+import speakingBubble from "../../assets/speaking-bubble.png";
+import talkingRobot from "../../assets/talking-robot.png";
 
 const TextGeneration = () => {
-  const ref = useRef();
-  const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const [prompt, setPrompt] = useState("");
 
-  const placeholder = "what's the meaning of life?";
+  const { setActiveSection, text, setText } = useStateContext();
 
-  const generateText = async (e: any) => {
-    e.preventDefault();
+  const placeholder = "What's the meaning of life?";
+
+  useEffect(() => {
+    setActiveSection("text");
+  }, []);
+
+  const generateText = async () => {
     setLoading(true);
 
     try {
@@ -19,7 +28,7 @@ const TextGeneration = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          prompt,
+          prompt: prompt.length === 0 ? placeholder : prompt,
         }),
       });
       const data = response.body;
@@ -33,7 +42,7 @@ const TextGeneration = () => {
         const { value, done: doneReading } = await reader.read();
         done = doneReading;
         const chunk = decoder.decode(value);
-        setText((prev) => (prev += chunk));
+        setText((prev: string) => (prev += chunk));
       }
     } catch (error) {
       alert(error);
@@ -43,42 +52,58 @@ const TextGeneration = () => {
     }
   };
   return (
-    <div className="h-screen">
+    <m.div
+      initial={{ y: "100%" }}
+      animate={{ y: "0%" }}
+      transition={{ duration: 0.75, ease: "easeOut" }}
+      exit={{ x: "-100%" }}
+      className="h-screen absolute top-0 left-0 w-full"
+    >
       <div className="pt-28 flex flex-col mx-auto">
-        <div className="flex items-start flex-col px-4">
-          <h3 className="backdrop-contrast-100 backdrop-blur-sm text-lg text-gray-800">
+        <div className="flex items-start flex-col px-4 overflow-hidden">
+          <m.h3
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 100 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            className="backdrop-contrast-100 backdrop-blur-sm text-lg text-gray-800"
+          >
             AI GENERATED
-          </h3>
-          <h1
+          </m.h3>
+          <m.h1
+            initial={{ y: 100 }}
+            animate={{ y: 0 }}
+            transition={{ delay: 0.25, duration: 0.5 }}
             className="backdrop-contrast-100 font-extrabold text-transparent text-6xl bg-clip-text 
                           bg-gradient-to-r from-sky-400 via-sky-500 to-cyan-400"
           >
             TEXT
-          </h1>
+          </m.h1>
         </div>
 
         <form className="flex flex-col items-center py-4 mt-4">
           <textarea
             id="textfield"
-            className="bg-gradient-to-br from-gray-100 to-slate-300
+            className="bg-gradient-to-br from-white via-gray-50 to-gray-200
                       px-4 py-2 w-2/3 rounded-sm min-h-[2rem] max-h-[6rem] overflow-x-scroll"
             value={prompt}
             onChange={(e) => {
               setPrompt(e.currentTarget.value);
             }}
             onKeyDown={(e) => {
-              if (e.keyCode === 13) generateText(e);
-              if (e.keyCode === 9) setPrompt(placeholder);
+              if (e.key === "Enter") generateText();
+              if (e.key === "Tab") setPrompt(placeholder);
             }}
             placeholder={placeholder}
           />
-          <div className="flex justify-center">
+          <div className="flex justify-center pt-4">
             {loading ? (
               <button
                 disabled
                 type="button"
-                className="bg-rose-600 font-bold border-2 border-black px-12 py-2
-                            hover:bg-rose-400 hover:cursor-not-allowed"
+                className={`${
+                  loading ? "bg-rose-400" : "bg-rose-600"
+                } font-bold border-2 border-black px-12 py-2
+                            hover:bg-rose-400 hover:cursor-not-allowed`}
               >
                 <svg
                   aria-hidden="true"
@@ -102,9 +127,10 @@ const TextGeneration = () => {
               <button
                 className="bg-rose-600 font-bold border-2 border-black px-12 py-2
                             hover:bg-rose-400"
-                type="button"
-                onClick={(e) => {
-                  generateText(e);
+                onClick={() => {
+                  if (prompt.length === 0) setPrompt(placeholder);
+                  setText("");
+                  generateText();
                 }}
               >
                 Go!
@@ -127,18 +153,38 @@ const TextGeneration = () => {
             }
           </div>
         </form>
-        {text.length > 0 && (
-          <div
-            className="bg-gradient-to-b from-gray-100 to-slate-300 
-                          min-h-[12rem] max-h-64 overflow-x-scroll 
-                          w-3/4 rounded-xl mx-auto px-4 pt-4 pb-6 mt-12
-                          text-xl animate-fadein"
+
+        <>
+          <m.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 100 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            className="relative w-2/3 ml-44 mt-2 z-20"
           >
-            {text}
-          </div>
-        )}
+            <Image
+              className="w-full h-full object-cover"
+              alt="text"
+              src={speakingBubble}
+              height={200}
+              width={200}
+            />
+            <p className="p-2 rounded-lg max-h-[10rem] overflow-scroll text-ellipsis absolute top-0 max-w-[80%] ml-5 mt-3">
+              {text.length > 0 ? text : loading ? "Hmmm" : "Let's talk!"}
+            </p>
+          </m.div>
+          <Image
+            className={`absolute -bottom-12 left-10 -rotate-[20deg] animate-slideup ${
+              loading && "animate-wiggle"
+            }`}
+            alt="robot"
+            src={talkingRobot}
+            height={200}
+            width={200}
+          />
+        </>
+        {/* )} */}
       </div>
-    </div>
+    </m.div>
   );
 };
 

@@ -26,6 +26,8 @@ textarea {
   resize: none; /*remove the resize handle on the bottom right*/
 }
 
-html {
+html,
+body {
   scroll-behavior: smooth;
+  overflow: hidden;
 }
