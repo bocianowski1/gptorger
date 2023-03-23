@@ -57,7 +57,6 @@ export async function Stream(payload: StreamPayload) {
       }
 
       const parser = createParser(onParse);
-      // https://web.dev/streams/#asynchronous-iteration
       for await (const chunk of res.body as any) {
         parser.feed(decoder.decode(chunk));
       }

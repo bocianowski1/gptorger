@@ -1,22 +1,17 @@
+import { ContextType, Post } from "@/utils/types";
 import { useState, useContext, createContext, ReactNode } from "react";
 
 interface Props {
   children: ReactNode;
 }
 
-interface Post {
-  name: string;
-  prompt: string;
-  imageURL: string;
-}
-
-const Context = createContext({} as any);
+const Context = createContext({} as ContextType);
 
 const StateContext = ({ children }: Props) => {
   const [activeSection, setActiveSection] = useState("index");
   const [imageURL, setImageURL] = useState("");
   const [text, setText] = useState("");
-  const [posts, setPosts] = useState<Promise<Post>[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
 
   return (
     <Context.Provider

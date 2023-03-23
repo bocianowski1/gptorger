@@ -26,7 +26,7 @@ router.route("/").get(async (req, res) => {
 router.route("/").post(async (req, res) => {
   try {
     const { name, prompt, image } = req.body;
-    const url = cloudinary.uploader.upload(image);
+    // const url = cloudinary.uploader.upload(image);
 
     const post = await PostSchema.create({
       name,
@@ -44,7 +44,16 @@ router.route("/").post(async (req, res) => {
 
 router.route("/").delete(async (req, res) => {
   try {
-  } catch (error) {}
+    const { id } = req.body;
+    const post = await PostSchema.findByIdAndDelete(id);
+    if (!post) {
+      return res.status(404).send({ message: "Post not found" });
+    }
+    res.status(200).send({ message: "Post deleted" });
+  } catch (error) {
+    res.status(500).send({ error });
+    console.log(error);
+  }
 });
 
 export default router;

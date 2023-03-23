@@ -1,16 +1,13 @@
-import React from "react";
-
 interface Props {
   message: string;
+  success: boolean;
 }
 
-const Alert = ({ message }: Props) => {
+export default function Alert({ message, success }: Props) {
   return (
-    <div>
+    <div className="">
       <h4>Alert</h4>
       <h5>{message}</h5>
     </div>
   );
-};
-
-export default Alert;
+}

@@ -3,18 +3,16 @@ import Image from "next/image";
 
 import background from "../assets/colorsky.jpg";
 import Navbar from "./navbar";
-import Scrollbar from "./scrollbar";
 
 interface Props {
   children: ReactNode;
 }
 
-const Layout = ({ children }: Props) => {
+export default function Layout({ children }: Props) {
   return (
     <>
       <Navbar />
-      {/* <Scrollbar /> */}
-      <main className="">
+      <main className="pt-4">
         <Image
           className="h-full w-full object-cover -z-20 fixed top-0"
           src={background}
@@ -26,6 +24,4 @@ const Layout = ({ children }: Props) => {
       </main>
     </>
   );
-};
-
-export default Layout;
+}

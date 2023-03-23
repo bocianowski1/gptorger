@@ -1,12 +1,16 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState, useRef } from "react";
+import { useEffect } from "react";
 import { useStateContext } from "@/context/state-context";
 import { motion as m } from "framer-motion";
 
+import speakingBubble from "../assets/speaking-bubble.png";
+import talkingRobot from "../assets/talking-robot.png";
+
 export default function Home() {
-  const { activeSection, setActiveSection } = useStateContext();
+  const { setActiveSection } = useStateContext();
+  const delay = 0.5;
 
   useEffect(() => {
     setActiveSection("index");
@@ -28,7 +32,7 @@ export default function Home() {
         className="h-screen absolute top-0 left-0 w-full flex items-end"
       >
         <div className="py-20 flex flex-col items-center mx-auto">
-          <div className="flex items-center flex-col mb-8 px-4 rounded-2xl overflow-hidden">
+          <div className="flex items-center flex-col mb-4 px-4 rounded-2xl overflow-hidden">
             <m.h3
               initial={{ opacity: 0 }}
               animate={{ opacity: 100 }}
@@ -47,7 +51,7 @@ export default function Home() {
               EXPLORER
             </m.h1>
           </div>
-          <div className="backdrop-contrast-100 pb-8 text-sm text-center">
+          <div className="backdrop-contrast-100 pb-8 text-center">
             <p className="px-4 py-1 text-white">
               Explore the amazing powers of artificial intelligence
             </p>
@@ -57,21 +61,57 @@ export default function Home() {
           </div>
           <div className="flex flex-col text-center gap-4">
             <Link
-              className="bg-rose-600 font-bold border-2 border-black px-12 py-2 rounded-full
+              className="bg-rose-500 font-bold border-2 border-black px-12 py-2 rounded-full
                           transition-all duration-200 hover:bg-rose-400"
-              href={"/ai/image-generation"}
+              href={"/image-generation"}
             >
-              TRY NOW
+              TRY IMAGES
             </Link>
-            {/* <Link
-              className="bg-rose-400 font-bold border-2 border-black px-12 py-2 rounded-full
+            <Link
+              className="bg-rose-500 font-bold border-2 border-black px-12 py-2 rounded-full
                           transition-all duration-200 hover:bg-rose-400"
-              href={"/feed"}
+              href={"/text-generation"}
             >
-              FEED
-            </Link> */}
+              TRY TEXT
+            </Link>
           </div>
         </div>
+        <>
+          <m.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 100 }}
+            transition={{ delay: delay + 0.25, duration: 0.5 }}
+            className="absolute top-36 left-20 w-40"
+          >
+            <Image
+              className="w-full h-full object-cover"
+              alt="text"
+              src={speakingBubble}
+              height={200}
+              width={200}
+            />
+            <div className="rounded-lg max-h-[10rem] overflow-scroll text-ellipsis absolute top-0 max-w-[80%] ml-5 mt-3">
+              <Link className="underline" href={"/feed"}>
+                Click here to see what the community has created!
+              </Link>
+            </div>
+          </m.div>
+
+          <m.div
+            initial={{ opacity: 0, x: -100 }}
+            animate={{ opacity: 100, x: 0 }}
+            transition={{ delay, duration: 0.5 }}
+            className="absolute top-52 -left-10 w-40"
+          >
+            <Image
+              className="w-full h-full object-cover"
+              alt="robot"
+              src={talkingRobot}
+              height={200}
+              width={200}
+            />
+          </m.div>
+        </>
       </m.div>
     </>
   );
